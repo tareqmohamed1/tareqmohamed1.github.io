@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tarek Mohamed — Backend .NET Developer building RESTful APIs and maintainable web applications." />
+  <title>Tarek Mohamed | Backend .NET Developer</title>
+  <style>
+    :root {
+      --bg: #14171c;
+      --header-bg: rgba(20,23,28,.80);
+      --nav-mobile-bg: #181b21;
+      --glow1: rgba(98,214,200,.06);
+      --glow2: rgba(138,167,255,.06);
+      --card-grad: linear-gradient(145deg, rgba(40,44,52,.95), rgba(26,29,35,.9));
+      --skill-text: #dbe6fa;
+      --tech-text: #b8c8e8;
+      --code-text: #c8d6ef;
+      --fact-bg: rgba(255,255,255,.05);
+      --input-bg: rgba(255,255,255,.06);
+      --btn-primary-text: #04110f;
+      color-scheme: dark;
+      --panel: rgba(32, 36, 43, .72);
+      --panel-solid: #1b1f25;
+      --text: #edf3ff;
+      --muted: #aab6ce;
+      --accent: #62d6c8;
+      --accent2: #8aa7ff;
+      --line: rgba(255, 255, 255, .12);
+      --shadow: 0 22px 60px rgba(0,0,0,.25);
+    }
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --header-bg: rgba(255,255,255,.88);
+      --nav-mobile-bg: #ffffff;
+      --panel: rgba(244, 246, 250, .95);
+      --panel-solid: #f4f6fa;
+      --text: #0b1020;
+      --muted: #4a566e;
+      --accent: #0c8c80;
+      --accent2: #3f5bd0;
+      --line: rgba(11, 16, 32, .14);
+      --shadow: 0 22px 60px rgba(11,16,32,.10);
+      --glow1: rgba(12,140,128,.08);
+      --glow2: rgba(63,91,208,.08);
+      --card-grad: linear-gradient(145deg, #f7f9fd, #e9eef8);
+      --skill-text: #1d2a4a;
+      --tech-text: #3b4a6b;
+      --code-text: #26324f;
+      --fact-bg: rgba(11,16,32,.04);
+      --input-bg: #ffffff;
+      --btn-primary-text: #ffffff;
+      color-scheme: light;
+    }
+    [data-theme="light"] .code .key { color: #3f5bd0; }
+    [data-theme="light"] .code .value { color: #0c8c80; }
+    [data-theme="light"] .code .comment { color: #7a869f; }
+    [data-theme="light"] .terminal-top i { background: #b4bdd0; }
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, var(--glow1), transparent 32rem),
+        radial-gradient(circle at 95% 15%, var(--glow2), transparent 30rem),
+        var(--bg);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, calc(100% - 40px)); margin: auto; }
+    header {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
+      background: var(--header-bg); border-bottom: 1px solid var(--line);
+    }
+    nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-weight: 800; letter-spacing: -.04em; font-size: 1.05rem; }
+    .brand span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .theme-btn { position: relative; width: 42px; height: 42px; padding: 0; cursor: pointer; border: 1px solid var(--line); color: var(--text); background: var(--panel); border-radius: 12px; display: grid; place-items: center; overflow: hidden; transition: border-color .2s, transform .2s, background-color .25s; }
+    .theme-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .theme-btn svg { position: absolute; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform .6s cubic-bezier(.68,-.45,.27,1.45), opacity .35s; }
+    .theme-btn .sun { color: #f5b942; }
+    .theme-btn .moon { color: #aab8ff; }
+    [data-theme="dark"] .theme-btn .moon { opacity: 1; transform: rotate(0) scale(1); }
+    [data-theme="dark"] .theme-btn .sun { opacity: 0; transform: rotate(-120deg) scale(.3); }
+    [data-theme="light"] .theme-btn .sun { opacity: 1; transform: rotate(0) scale(1); }
+    [data-theme="light"] .theme-btn .moon { opacity: 0; transform: rotate(120deg) scale(.3); }
+    [data-theme="light"] .theme-btn .sun { color: #e08a00; }
+    [data-theme="light"] .theme-btn .moon { color: #3f5bd0; }
+    .theme-btn.pop { animation: pop .55s ease; }
+    @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(.82) rotate(-12deg); } 100% { transform: scale(1) rotate(0); } }
+
+    /* animated background */
+    .bg-fx { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .bg-fx .p { position: absolute; will-change: transform; transition: transform .25s linear; }
+    .bg-fx .blob { width: 46vmax; height: 46vmax; border-radius: 50%; filter: blur(90px); opacity: .22; animation: drift 24s ease-in-out infinite alternate; }
+    .bg-fx .p1 { top: -12vmax; left: -10vmax; }
+    .bg-fx .p2 { top: 28vh; right: -16vmax; }
+    .bg-fx .p3 { bottom: -18vmax; left: 20vw; }
+    .bg-fx .b1 { background: var(--accent); }
+    .bg-fx .b2 { background: var(--accent2); animation-duration: 30s; animation-delay: -8s; }
+    .bg-fx .b3 { background: linear-gradient(135deg, var(--accent), var(--accent2)); animation-duration: 36s; animation-delay: -15s; }
+    [data-theme="light"] .bg-fx .blob { opacity: .16; }
+    @keyframes drift {
+      0%   { transform: translate3d(0,0,0) scale(1); }
+      50%  { transform: translate3d(7vw,5vh,0) scale(1.12); }
+      100% { transform: translate3d(-5vw,9vh,0) scale(.94); }
+    }
+    .panel, .hero-card, .contact-box { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    @media (prefers-reduced-motion: reduce) {
+      .bg-fx .blob { animation: none; }
+      .bg-fx .p { transition: none; }
+      .theme-btn svg, .theme-btn.pop { transition: none; animation: none; }
+    }
+    body, header, .panel, .hero-card { transition: background-color .25s, color .25s, border-color .25s; }
+    .nav-links { display: flex; align-items: center; gap: 23px; color: var(--muted); font-size: .92rem; }
+    .nav-links a:hover { color: var(--accent); }
+    .menu-btn { display: none; border: 1px solid var(--line); color: var(--text); background: var(--panel); padding: 8px 11px; border-radius: 10px; }
+    .hero { padding: 92px 0 76px; display: grid; grid-template-columns: 1.35fr .65fr; gap: 55px; align-items: center; }
+    .eyebrow { display: inline-flex; gap: 9px; align-items: center; color: var(--accent); border: 1px solid rgba(98,214,200,.25); background: rgba(98,214,200,.07); padding: 7px 12px; border-radius: 999px; font-size: .82rem; font-weight: 650; }
+    .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 5px rgba(98,214,200,.12); }
+    h1 { font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.06; letter-spacing: -.065em; margin: 23px 0 20px; }
+    h1 .highlight { color: var(--accent); }
+    .hero p { max-width: 670px; color: var(--muted); font-size: 1.1rem; margin: 0 0 27px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-radius: 12px; font-weight: 750; border: 1px solid var(--line); transition: transform .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .btn.primary { background: var(--accent); color: var(--btn-primary-text); border-color: var(--accent); }
+    .hero-card { padding: 26px; border: 1px solid var(--line); border-radius: 24px; background: var(--card-grad); box-shadow: var(--shadow); }
+    .terminal-top { display: flex; gap: 7px; margin-bottom: 23px; }
+    .terminal-top i { width: 9px; height: 9px; display: block; border-radius: 50%; background: #63718c; }
+    .code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9rem; line-height: 2; color: var(--code-text); }
+    .code .key { color: #8aa7ff; } .code .value { color: #62d6c8; } .code .comment { color: #7d8aa5; }
+    section { padding: 66px 0; }
+    .section-head { margin-bottom: 28px; }
+    .kicker { color: var(--accent); font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .15em; }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; letter-spacing: -.04em; margin: 8px 0 10px; }
+    .section-head p { margin: 0; color: var(--muted); max-width: 700px; }
+    .about-grid, .project-grid, .services-grid { display: grid; gap: 18px; }
+    .about-grid { grid-template-columns: 1.1fr .9fr; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
+    .panel p { color: var(--muted); margin-top: 0; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fact { padding: 15px; border-radius: 14px; background: var(--fact-bg); border: 1px solid var(--line); }
+    .fact strong { display: block; color: var(--accent); font-size: .92rem; margin-bottom: 3px; }
+    .fact span { color: var(--muted); font-size: .9rem; }
+    .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill { padding: 9px 12px; border-radius: 10px; color: var(--skill-text); background: rgba(138,167,255,.08); border: 1px solid rgba(138,167,255,.18); font-size: .9rem; }
+    .project-grid { grid-template-columns: repeat(3, 1fr); }
+    .project { display: flex; flex-direction: column; min-height: 300px; }
+    .project .tag { align-self: flex-start; font-size: .75rem; color: var(--accent); border: 1px solid rgba(98,214,200,.22); padding: 5px 9px; border-radius: 999px; margin-bottom: 12px; }
+    .project h3, .service h3 { margin: 0 0 10px; font-size: 1.18rem; }
+    .project p, .service p { color: var(--muted); font-size: .94rem; }
+    .project .tech { color: var(--tech-text); font-size: .82rem; margin-top: auto; padding-top: 14px; }
+    .project a { margin-top: 17px; color: var(--accent); font-weight: 750; font-size: .9rem; }
+    .services-grid { grid-template-columns: repeat(3, 1fr); }
+    .service-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: rgba(98,214,200,.1); color: var(--accent); font-size: 1.15rem; margin-bottom: 15px; }
+    .contact-box { display: flex; justify-content: space-between; align-items: center; gap: 25px; padding: 32px; border: 1px solid rgba(98,214,200,.25); border-radius: 24px; background: linear-gradient(120deg, rgba(98,214,200,.09), rgba(138,167,255,.08)); }
+    .contact-box p { color: var(--muted); margin-bottom: 0; max-width: 650px; }
+    footer { border-top: 1px solid var(--line); padding: 25px 0; color: var(--muted); font-size: .86rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; padding-top: 65px; gap: 35px; }
+      .hero-card { max-width: 600px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .project-grid, .services-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 28px, 1100px); }
+      .menu-btn { display: inline-block; }
+      .nav-links { display: none; position: absolute; top: 71px; left: 0; right: 0; background: var(--nav-mobile-bg); border-bottom: 1px solid var(--line); padding: 18px 22px; flex-direction: column; align-items: flex-start; }
+      .nav-links.open { display: flex; }
+      .project-grid, .services-grid, .facts { grid-template-columns: 1fr; }
+      section { padding: 48px 0; }
+      .contact-box { align-items: flex-start; flex-direction: column; padding: 24px; }
+    }
+  
+    .project-grid { grid-template-columns: repeat(2, 1fr); }
+    .project { min-height: 280px; }
+    .project .links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .contact-box { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+    .contact-list { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 8px; color: var(--muted); }
+    .contact-list a { color: var(--text); }
+    .contact-list a:hover { color: var(--accent); }
+    .msg-form { display: grid; gap: 12px; }
+    .msg-form label { font-size: .85rem; color: var(--muted); display: grid; gap: 6px; }
+    .msg-form input, .msg-form textarea { font: inherit; color: var(--text); background: var(--input-bg); border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; width: 100%; }
+    .msg-form input:focus, .msg-form textarea:focus { outline: none; border-color: var(--accent); }
+    .msg-form textarea { min-height: 110px; resize: vertical; }
+    .msg-form button { cursor: pointer; font: inherit; }
+    .msg-form .hp { position: absolute; left: -9999px; }
+    .form-status { min-height: 1.3em; font-size: .9rem; margin: 0; color: var(--muted); }
+    .form-status.ok { color: var(--accent); }
+    .form-status.err { color: #ff8f8f; }
+    @media (max-width: 850px) { .contact-wrap { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .project-grid { grid-template-columns: 1fr; } }
+  
+  </style>
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true">
+  <div class="p p1" data-speed="-0.12"><div class="blob b1"></div></div>
+  <div class="p p2" data-speed="0.08"><div class="blob b2"></div></div>
+  <div class="p p3" data-speed="-0.2"><div class="blob b3"></div></div>
+</div>
+<header>
+  <div class="container">
+    <nav aria-label="Main navigation">
+      <a class="brand" href="#home"><span>Eng:</span> Tarek Mohamed</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#services">Services</a><a href="#contact">Contact</a>
+      </div>
+    <div class="nav-right">
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch between dark and light mode" title="Switch theme">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Open navigation">Menu ☰</button>
+      </div>
+      </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container hero" id="home">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Backend .NET Developer</div>
+      <h1>Building reliable<br><span class="highlight">backend solutions.</span></h1>
+      <p>
+        I'm Tarek Mohamed, a Computer Science and Artificial Intelligence student at Benha University,
+        focused on backend development with C# and .NET. I build organized APIs, database-driven
+        applications, and maintainable systems with a focus on clear architecture and practical solutions.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="#projects">Explore My Work ↘</a>
+        <a class="btn" href="#contact">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-card" aria-label="Developer profile card">
+      <div class="terminal-top"><i></i><i></i><i></i></div>
+      <div class="code">
+        <div><span class="comment">// Developer profile</span></div>
+        <div>{</div>
+        <div>&nbsp;&nbsp;<span class="key">"name"</span>: <span class="value">"Tarek Mohamed"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="key">"role"</span>: <span class="value">"Backend .NET Developer"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="key">"stack"</span>: [</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">"C#"</span>, <span class="value">"ASP.NET Core"</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">"EF Core"</span>, <span class="value">"SQL Server"</span></div>
+        <div>&nbsp;&nbsp;],</div>
+        <div>&nbsp;&nbsp;<span class="key">"mindset"</span>: <span class="value">"Build. Learn. Improve."</span></div>
+        <div>}</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">About me</div>
+        <h2>Focused on useful, maintainable software.</h2>
+        <p>I enjoy solving backend problems, designing clear data flows, and learning how to build systems that can grow with their requirements.</p>
+      </div>
+      <div class="about-grid">
+        <div class="panel">
+          <p>
+            My main focus is building backend functionality for web applications, from database design and business logic
+            to API endpoints and integration. I value readable code, thoughtful problem-solving, and clear communication
+            so that the delivered work is easier to test, maintain, and extend.
+          </p>
+          <p style="margin-bottom:0">I am continuously improving my skills through hands-on projects and collaborative learning.</p>
+        </div>
+        <div class="facts">
+          <div class="fact"><strong>Primary stack</strong><span>C# / ASP.NET Core</span></div>
+          <div class="fact"><strong>Data</strong><span>SQL Server / EF Core</span></div>
+          <div class="fact"><strong>API design</strong><span>RESTful Web APIs</span></div>
+          <div class="fact"><strong>Architecture</strong><span>Layered design / Clean Code</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Technical skills</div>
+        <h2>Tools I work with</h2>
+        <p>My current focus is the .NET backend ecosystem and the tools needed to build and maintain web applications.</p>
+      </div>
+      <div class="panel skills">
+        <span class="skill">C#</span><span class="skill">OOP</span><span class="skill">ASP.NET Core</span>
+        <span class="skill">ASP.NET Core MVC</span><span class="skill">RESTful APIs</span><span class="skill">Entity Framework Core</span>
+        <span class="skill">SQL Server</span><span class="skill">LINQ</span><span class="skill">JWT Authentication</span>
+        <span class="skill">Clean Architecture Concepts</span><span class="skill">Git</span><span class="skill">GitHub</span>
+        <span class="skill">HTML</span><span class="skill">CSS</span><span class="skill">JavaScript</span><span class="skill">Swagger</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Selected work</div>
+        <h2>Projects I've worked on</h2>
+        <p>A selection of projects demonstrating backend development, database integration, and web application functionality.</p>
+      </div>
+      <div class="project-grid">
+        <article class="panel project">
+          <span class="tag">ASP.NET Core Web API · Team Leader</span>
+          <h3>School Management System</h3>
+          <p>A school management backend covering authentication, academic structure, students, teachers, attendance, exams, and fees. I led the architecture setup, security, and code review for a team of four.</p>
+          <div class="tech">C# · ASP.NET Core · EF Core · SQL Server · JWT</div>
+          <div class="links"><a href="https://github.com/tareqmohamed1/SchoolManagement.API" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a></div>
+        </article>
+        <article class="panel project">
+          <span class="tag">ASP.NET Core Web API</span>
+          <h3>Chemistry Platform</h3>
+          <p>A chemistry learning platform backend with API endpoints, SQLite data storage, and a connected web interface, deployed online.</p>
+          <div class="tech">C# · ASP.NET Core · EF Core · SQLite</div>
+          <div class="links">
+            <a href="https://chemistry-platform.runasp.net/platform.html" target="_blank" rel="noopener noreferrer">Live demo ↗</a>
+            <a href="https://github.com/tareqmohamed1/ChemistryPlatform-Backend" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a>
+          </div>
+        </article>
+        <article class="panel project">
+          <span class="tag">ASP.NET Core MVC</span>
+          <h3>Hospital Management System</h3>
+          <p>A database-driven management application for working with employees, departments, and patient-related records, including search and edit workflows.</p>
+          <div class="tech">C# · ASP.NET Core MVC · EF Core · SQL Server</div>
+          <div class="links"><a href="https://github.com/tareqmohamed1/Hospital-Management-System" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a></div>
+        </article>
+        <article class="panel project">
+          <span class="tag">E-commerce</span>
+          <h3>FashionStore</h3>
+          <p>A fashion-store project used to practice web application development and organize application functionality around an e-commerce scenario.</p>
+          <div class="tech">.NET · C# · Web Development</div>
+          <div class="links"><a href="https://github.com/tareqmohamed1/FashionStore" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Services</div>
+        <h2>How I can help</h2>
+        <p>Services aligned with my current backend development skills and project experience.</p>
+      </div>
+      <div class="services-grid">
+        <article class="panel service">
+          <div class="service-icon">⌘</div>
+          <h3>Backend Development</h3>
+          <p>Develop backend features and business logic using C# and ASP.NET Core for web applications.</p>
+        </article>
+        <article class="panel service">
+          <div class="service-icon">↔</div>
+          <h3>RESTful Web APIs</h3>
+          <p>Create and connect API endpoints, organize request/response handling, and document APIs with Swagger.</p>
+        </article>
+        <article class="panel service">
+          <div class="service-icon">▤</div>
+          <h3>Database Integration</h3>
+          <p>Design and connect relational databases using SQL Server and Entity Framework Core, including CRUD operations.</p>
+        </article>
+        <article class="panel service">
+          <div class="service-icon">⌕</div>
+          <h3>Bug Fixing & Debugging</h3>
+          <p>Investigate and resolve backend or database issues within a clearly defined scope.</p>
+        </article>
+        <article class="panel service">
+          <div class="service-icon">▣</div>
+          <h3>MVC Web Applications</h3>
+          <p>Build and improve server-rendered web application features using ASP.NET Core MVC.</p>
+        </article>
+        <article class="panel service">
+          <div class="service-icon">⌁</div>
+          <h3>Code Organization</h3>
+          <p>Improve readability and separation of concerns, with maintainability in mind and within agreed project requirements.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-box">
+          <div>
+            <div class="kicker">Contact</div>
+            <h2>Have a project in mind?</h2>
+            <p>Feel free to reach out to discuss a backend feature, API, or database-driven web application.</p>
+          </div>
+          <ul class="contact-list">
+            <li>Email: <a href="mailto:tarekmohamed09e4@gmail.com">tarekmohamed09e4@gmail.com</a></li>
+            <li>Phone: <a href="tel:+201146736044">01146736044</a></li>
+          </ul>
+          <div class="actions">
+            <a class="btn primary" href="https://www.linkedin.com/in/tarek-mo7amed/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a class="btn" href="https://github.com/tareqmohamed1" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="kicker">Leave a message</div>
+          <h2 style="font-size:1.5rem">Send me a comment</h2>
+          <form class="msg-form" id="msgForm">
+            <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Name<input type="text" name="name" required maxlength="80"></label>
+            <label>Email<input type="email" name="email" required maxlength="120"></label>
+            <label>Message<textarea name="message" required maxlength="1500"></textarea></label>
+            <button class="btn primary" type="submit" id="sendBtn">Send message</button>
+            <p class="form-status" id="formStatus" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-row">
+    <span>© <span id="year"></span> Tarek Mohamed</span>
+    <span>Backend .NET Developer · Built with HTML & CSS</span>
+  </div>
+</footer>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+  menuBtn.addEventListener("click", () => navLinks.classList.toggle("open"));
+  navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => navLinks.classList.remove("open")));
+  const form = document.getElementById("msgForm");
+  const statusEl = document.getElementById("formStatus");
+  const sendBtn = document.getElementById("sendBtn");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusEl.className = "form-status"; statusEl.textContent = "Sending...";
+    sendBtn.disabled = true;
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/tarekmohamed09e4@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: form.name.value, email: form.email.value, message: form.message.value,
+          _subject: "New message from your portfolio", _template: "table", _captcha: "false", _honey: form._honey.value
+        })
+      });
+      if (!res.ok) throw new Error("bad response");
+      form.reset();
+      statusEl.className = "form-status ok"; statusEl.textContent = "Thank you! Your message has been sent.";
+    } catch (err) {
+      statusEl.className = "form-status err";
+      statusEl.textContent = "Could not send. Please email me directly at tarekmohamed09e4@gmail.com.";
+    } finally { sendBtn.disabled = false; }
+  });
+
+  const themeBtn = document.getElementById("themeBtn");
+  function applyTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    themeBtn.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  }
+  let savedTheme = "dark";
+  try { savedTheme = localStorage.getItem("theme") || "dark"; } catch (e) {}
+  applyTheme(savedTheme);
+  themeBtn.addEventListener("click", () => {
+    const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+    themeBtn.classList.remove("pop"); void themeBtn.offsetWidth; themeBtn.classList.add("pop");
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+
+  // background moves gently as you scroll up or down
+  const layers = [...document.querySelectorAll(".bg-fx .p")];
+  let ticking = false;
+  function moveBg() {
+    const y = window.scrollY;
+    layers.forEach(l => { l.style.transform = "translate3d(0," + (y * parseFloat(l.dataset.speed)) + "px,0)"; });
+    ticking = false;
+  }
+  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(moveBg); } }, { passive: true });
+  moveBg();
+</script>
+</body>
+</html>
